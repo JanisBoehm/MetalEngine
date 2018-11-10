@@ -64,6 +64,7 @@ class Animation {
         
         loop()
         timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.loop), userInfo: nil, repeats: self.repeating)
+        timer?.tolerance = interval*0.2
         
     }
     

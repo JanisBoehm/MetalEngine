@@ -13,17 +13,21 @@ import simd
 
 class UIManager: NSResponder {
     
-    var keyboard: KeyboardState
+    var keyboard: KeyboardState!
     
-    required init?(coder: NSCoder) {
+    override init() {
         keyboard = KeyboardState()
-        super.init(coder: coder)
+        super.init()
         NSEvent.addLocalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown, handler: {event -> NSEvent in
             self.keyDown(with: event)
             return NSEvent.init()})
         NSEvent.addLocalMonitorForEvents(matching: NSEvent.EventTypeMask.keyUp, handler: {event -> NSEvent in
             self.keyUp(with: event)
             return NSEvent.init()})
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
     
     override func keyDown(with event: NSEvent) {
