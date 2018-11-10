@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AD6C92A0219711440077841C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6C929F219711440077841C /* AppDelegate.swift */; };
-		AD6C92A2219711440077841C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6C92A1219711440077841C /* ViewController.swift */; };
 		AD6C92A4219711450077841C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD6C92A3219711450077841C /* Assets.xcassets */; };
 		AD6C92A7219711450077841C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD6C92A5219711450077841C /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -16,7 +15,6 @@
 /* Begin PBXFileReference section */
 		AD6C929C219711440077841C /* MetalEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD6C929F219711440077841C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AD6C92A1219711440077841C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AD6C92A3219711450077841C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD6C92A6219711450077841C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AD6C92A8219711450077841C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -54,7 +52,6 @@
 			isa = PBXGroup;
 			children = (
 				AD6C929F219711440077841C /* AppDelegate.swift */,
-				AD6C92A1219711440077841C /* ViewController.swift */,
 				AD6C92A3219711450077841C /* Assets.xcassets */,
 				AD6C92A5219711450077841C /* Main.storyboard */,
 				AD6C92A8219711450077841C /* Info.plist */,
@@ -133,7 +130,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD6C92A2219711440077841C /* ViewController.swift in Sources */,
 				AD6C92A0219711440077841C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
