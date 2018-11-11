@@ -16,7 +16,6 @@ class Character: Sprite {
     
     var textures: [MTLTexture?]
     var count: Int
-    var device: MTLDevice!
     
     var animation: Animation!
     
@@ -30,7 +29,6 @@ class Character: Sprite {
                   id: Int) {
         textures = [MTLTexture?]()
         self.count = 1
-        self.device = device
         
         super.init(device: device, vertexdata: vertexdata, vertexLength: vertexLength, indexdata: indexdata, indexLength: indexLength, textureURL: textureURL, id: id)
         
@@ -48,7 +46,6 @@ class Character: Sprite {
          id: Int) {
         textures = [MTLTexture?]()
         self.count = 0
-        self.device = device
         
         super.init(device: device, vertexdata: vertexdata, vertexLength: vertexLength, indexdata: indexdata, indexLength: indexLength, textureURL: textureURLs[0], id: 0)
         
