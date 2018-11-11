@@ -106,7 +106,7 @@ class UIManager: NSResponder {
         case kVK_ANSI_9:
             keyboard.keyState9 = .down
         default:
-            return
+            _ = 0
         }
     }
     
@@ -186,7 +186,7 @@ class UIManager: NSResponder {
         case kVK_ANSI_9:
             keyboard.keyState9 = .up
         default:
-            return
+            _ = 0
         }
     }
     

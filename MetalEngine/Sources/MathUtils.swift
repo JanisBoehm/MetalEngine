@@ -155,10 +155,10 @@ func translationMatrix(position: float4) -> matrix_float4x4 {
     // end of func translationMatrix(position: float3) -> matrix_float4x4
 }
 
-func scalingMatrix(scale: Float) -> matrix_float4x4 {
-    let X = vector_float4(scale, 0, 0, 0)
-    let Y = vector_float4(0, scale, 0, 0)
-    let Z = vector_float4(0, 0, scale, 0)
+func scalingMatrix(scale: float3) -> matrix_float4x4 {
+    let X = vector_float4(scale.x, 0, 0, 0)
+    let Y = vector_float4(0, scale.y, 0, 0)
+    let Z = vector_float4(0, 0, scale.z, 0)
     let W = vector_float4(0, 0, 0, 1)
     return matrix_float4x4(columns:(X, Y, Z, W))
     // end of func scalingMatrix(scale: Float) -> matrix_float4x4

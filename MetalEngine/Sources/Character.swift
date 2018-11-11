@@ -16,15 +16,25 @@ class Character: Sprite {
     
     var textures: [MTLTexture?]
     var count: Int
+    var device: MTLDevice!
     
-    var animation: Animation?
+    var animation: Animation!
     
     
-    override init(device: MTLDevice?, vertexdata: [Vertex], vertexLength: Int, indexdata: [uint16], indexLength: Int, textureURL: URL, id: Int) {
+    override init(device: MTLDevice?,
+                  vertexdata: [Vertex],
+                  vertexLength: Int,
+                  indexdata: [uint16],
+                  indexLength: Int,
+                  textureURL: URL,
+                  id: Int) {
         textures = [MTLTexture?]()
-        count = 1
-        self.animation = Animation()
+        self.count = 1
+        self.device = device
+        
         super.init(device: device, vertexdata: vertexdata, vertexLength: vertexLength, indexdata: indexdata, indexLength: indexLength, textureURL: textureURL, id: id)
+        
+        textures.append(texture)
         //end of override init()
     }
     
@@ -37,21 +47,28 @@ class Character: Sprite {
          count: Int,
          id: Int) {
         textures = [MTLTexture?]()
-        self.count = count
-        self.animation = Animation()
+        self.count = 0
+        self.device = device
+        
         super.init(device: device, vertexdata: vertexdata, vertexLength: vertexLength, indexdata: indexdata, indexLength: indexLength, textureURL: textureURLs[0], id: 0)
         
-        let textureLoader = MTKTextureLoader(device: device!)
         if textureURLs.count >= 1 {
             for i in 0..<count {
-                do {
-                    textures.append( try textureLoader.newTexture(URL: textureURLs[i], options: nil))
-                } catch let e {
-                    print("Failed to load texture: \(e)")
-                }
+                addTexture(with: textureURLs[i])
             }
         }
         //end of init()
+    }
+    
+    func addTexture(with url: URL) {
+        let textureLoader = MTKTextureLoader(device: device)
+        do {
+            textures.append(try textureLoader.newTexture(URL: url, options: nil))
+            count += 1
+        } catch let e {
+            print("Failed to load texture: \(e)")
+        }
+        
     }
     
     public func clearAnimation() {

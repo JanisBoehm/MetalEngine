@@ -18,7 +18,7 @@ class BoundingBox2D {
     var bounds: Rect
     
     var rotation: vector_float3
-    var scale: Float
+    var scale: vector_float3
     var translation: vector_float4
     
     var matrix: matrix_float4x4
@@ -36,7 +36,7 @@ class BoundingBox2D {
         self.bounds = bounds
         
         rotation = vector_float3(0,0,0)
-        scale = 1.0
+        scale = vector_float3(1,1,1)
         translation = vector_float4(0,0,0,1)
         
         matrix = matrix_multiply(translationMatrix(position: translation),
