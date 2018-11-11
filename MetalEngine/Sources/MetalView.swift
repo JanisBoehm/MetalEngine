@@ -14,8 +14,8 @@ import MetalKit
 
 class MetalView: MTKView {
     
-    var testSprite: Character!
-    var playerSprite: Character!
+    var testSprite: Sprite!
+    var playerSprite: Sprite!
     
     var uimanager: UIManager!
     var renderer: Renderer!
@@ -102,7 +102,7 @@ class MetalView: MTKView {
                                      Vertex(pos: [-1.0, 1.0, 0.0, 1.0], col: [ 1.0, 1.0, 0.0, 1.0], tex: [0.0, 0.0]),
                                      Vertex(pos: [ 0.0, 0.0, 0.0, 1.0], col: [ 0.0, 0.0, 0.0, 1.0], tex: [0.0, 0.0]),]
         
-        let _: [Vertex] = [Vertex(pos: [-0.625,-1.0, 0.0, 1.0], col: [ 1.0, 0.0, 0.0, 1.0], tex: [0.0, 1.0]),
+        let vertex_data2: [Vertex] = [Vertex(pos: [-0.625,-1.0, 0.0, 1.0], col: [ 1.0, 0.0, 0.0, 1.0], tex: [0.0, 1.0]),
                                       Vertex(pos: [ 0.625,-1.0, 0.0, 1.0], col: [ 0.0, 1.0, 0.0, 1.0], tex: [1.0, 1.0]),
                                       Vertex(pos: [ 0.625, 1.0, 0.0, 1.0], col: [ 0.0, 0.0, 1.0, 1.0], tex: [1.0, 0.0]),
                                       Vertex(pos: [-0.625, 1.0, 0.0, 1.0], col: [ 1.0, 1.0, 0.0, 1.0], tex: [0.0, 0.0]),
@@ -118,23 +118,17 @@ class MetalView: MTKView {
         let urlPlayer4 = Bundle.main.url(forResource: "starmanTopDown", withExtension: "png")!
         //let urlBlueBox = Bundle.main.url(forResource: "blue", withExtension: "png")!
         
-        testSprite = Character(device: device,
-                               vertexdata: vertex_data,
-                               vertexLength: MemoryLayout<Vertex>.size * vertex_data.count,
-                               indexdata: index_data,
-                               indexLength: MemoryLayout<uint16>.size * index_data.count,
-                               textureURLs: [url, urlMetal2],
-                               count: 2,
-                               id: 0)
+        testSprite = Sprite(device: device,
+                            vertexdata: vertex_data,
+                            indexdata: index_data,
+                            textureURLs: [url,urlMetal2],
+                            id: 0)
         
-        playerSprite = Character(device: device,
-                                 vertexdata: vertex_data,
-                                 vertexLength: MemoryLayout<Vertex>.size * vertex_data.count,
-                                 indexdata: index_data,
-                                 indexLength: MemoryLayout<uint16>.size * index_data.count,
-                                 textureURLs: [urlPlayer1,urlPlayer2,urlPlayer3,urlPlayer4],
-                                 count: 4,
-                                 id: 1)
+        playerSprite = Sprite(device: device,
+                              vertexdata: vertex_data,
+                              indexdata: index_data,
+                              textureURLs: [urlPlayer1,urlPlayer2,urlPlayer3,urlPlayer4],
+                              id: 1)
         
         testSprite.boundingBox.scale = float3(0.5,0.5,1)
         testSprite.boundingBox.rotation.z = 2

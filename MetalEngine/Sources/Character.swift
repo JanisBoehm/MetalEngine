@@ -10,15 +10,9 @@ import Foundation
 import MetalKit
 import simd
 
-
+/*
 
 class Character: Sprite {
-    
-    var textures: [MTLTexture?]
-    var count: Int
-    
-    var animation: Animation!
-    
     
     override init(device: MTLDevice?,
                   vertexdata: [Vertex],
@@ -44,7 +38,7 @@ class Character: Sprite {
          textureURLs: [URL],
          count: Int,
          id: Int) {
-        textures = [MTLTexture?]()
+        textures = [MTLTexture]()
         self.count = 0
         
         super.init(device: device, vertexdata: vertexdata, vertexLength: vertexLength, indexdata: indexdata, indexLength: indexLength, textureURL: textureURLs[0], id: 0)
@@ -87,3 +81,5 @@ class Character: Sprite {
     }
     
 }
+
+ */

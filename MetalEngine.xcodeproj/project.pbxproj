@@ -32,6 +32,7 @@
 		AD6C92D82197160D0077841C /* metal.png in Resources */ = {isa = PBXBuildFile; fileRef = AD6C92CB2197160D0077841C /* metal.png */; };
 		AD6C92DA219716390077841C /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6C92D9219716390077841C /* Animation.swift */; };
 		AD6C92DC21973B9C0077841C /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6C92DB21973B9C0077841C /* Renderer.swift */; };
+		AD6C92DE2198DE310077841C /* TestModel.orion in Resources */ = {isa = PBXBuildFile; fileRef = AD6C92DD2198DE310077841C /* TestModel.orion */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		AD6C92CB2197160D0077841C /* metal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metal.png; sourceTree = "<group>"; };
 		AD6C92D9219716390077841C /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		AD6C92DB21973B9C0077841C /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		AD6C92DD2198DE310077841C /* TestModel.orion */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestModel.orion; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 		AD6C92BE219715F10077841C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AD6C92DD2198DE310077841C /* TestModel.orion */,
 				AD6C92C0219716070077841C /* blue.png */,
 				AD6C92CB2197160D0077841C /* metal.png */,
 				AD6C92C3219716090077841C /* metal2.png */,
@@ -206,6 +209,7 @@
 				AD6C92CE2197160D0077841C /* starmanRight2.png in Resources */,
 				AD6C92CF2197160D0077841C /* starmanLeft1.png in Resources */,
 				AD6C92D02197160D0077841C /* metal2.png in Resources */,
+				AD6C92DE2198DE310077841C /* TestModel.orion in Resources */,
 				AD6C92A4219711450077841C /* Assets.xcassets in Resources */,
 				AD6C92D82197160D0077841C /* metal.png in Resources */,
 				AD6C92CC2197160D0077841C /* starmanRight1.png in Resources */,

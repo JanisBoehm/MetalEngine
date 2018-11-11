@@ -18,14 +18,19 @@ class Sprite {
     var indexBuffer: MTLBuffer!
     var texture: MTLTexture!
     var device: MTLDevice!
+    var textures: [MTLTexture?]
     
+    var count: Int
     var spriteID: Int
 
     var boundingBox: BoundingBox2D!
+    var animation: Animation!
     
     init(device: MTLDevice?,vertexdata: [Vertex], vertexLength: Int, indexdata: [uint16], indexLength: Int, textureURL: URL, id: Int) {
         spriteID = id
         self.device = device
+        self.count = 1
+        self.textures = [MTLTexture?]()
         
         let rect = Rect(a: vertexdata[0].position, b: vertexdata[1].position, c: vertexdata[2].position, d: vertexdata[3].position)
         boundingBox = BoundingBox2D(origin: vector_float4(0,0,0,0), bounds: rect)
@@ -34,7 +39,56 @@ class Sprite {
         uniformBuffer = device?.makeBuffer(length: MemoryLayout<Float>.size*16, options: [])
         indexBuffer = device?.makeBuffer(bytes: indexdata, length: indexLength, options: [])
         
-        loadTexture(from: textureURL)
+        addTexture(with: textureURL)
+        texture = textures[0]
+    }
+    
+    init(device: MTLDevice?, vertexdata: [Vertex], indexdata: [uint16], textureURLs: [URL], id: Int) {
+        spriteID = id
+        self.device = device
+        self.count = textureURLs.count
+        self.textures = [MTLTexture?]()
+        
+        let rect = Rect(a: vertexdata[0].position, b: vertexdata[1].position, c: vertexdata[2].position, d: vertexdata[3].position)
+        boundingBox = BoundingBox2D(origin: float4(0,0,0,1), bounds: rect)
+        
+        vertexBuffer = self.device.makeBuffer(bytes: vertexdata, length: vertexdata.count * MemoryLayout<Vertex>.size, options: [])
+        uniformBuffer = self.device.makeBuffer(length: MemoryLayout<Float>.size * 16, options: [])
+        indexBuffer = self.device.makeBuffer(bytes: indexdata, length: indexdata.count * MemoryLayout<Vertex>.size, options: [])
+        
+        for i in 0..<self.count {
+            addTexture(with: textureURLs[i])
+        }
+        texture = textures[0]
+    }
+    
+    func addTexture(with url: URL) {
+        let textureLoader = MTKTextureLoader(device: device)
+        do {
+            textures.append(try textureLoader.newTexture(URL: url, options: nil))
+            count += 1
+        } catch let e {
+            print("Failed to load texture: \(e)")
+        }
+        
+    }
+    
+    public func clearAnimation() {
+        if (animation != nil) {
+            animation?.timer?.invalidate()
+            animation = nil
+        }
+    }
+    
+    public func setAnimation(name: String, frameIndex: [Int], interval: TimeInterval, repeating: Bool = true) {
+        clearAnimation()
+        animation = Animation(animationName: name, frameIndex: frameIndex, topTexture: &texture, textures: textures, interval: interval, repeating: repeating)
+    }
+    
+    public func setTopTexture(id: Int) {
+        if textures[id] != nil {
+            texture = textures[id]
+        }
     }
     
     func loadTexture(from url: URL) {
@@ -44,10 +98,6 @@ class Sprite {
         } catch let e {
             print("Failed to load texture: \(e)")
         }
-    }
-    
-    func loadVertexData(from file: URL) {
-        
     }
     
     func render(commandEncoder: MTLRenderCommandEncoder?) {
