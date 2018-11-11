@@ -26,7 +26,7 @@ class Sprite {
     var boundingBox: BoundingBox2D!
     var animation: Animation!
     
-    init(device: MTLDevice?,vertexdata: [Vertex], vertexLength: Int, indexdata: [uint16], indexLength: Int, textureURL: URL, id: Int) {
+    init(device: MTLDevice?,vertexdata: [Vertex], indexdata: [uint16], textureURL: URL, id: Int) {
         spriteID = id
         self.device = device
         self.count = 1
@@ -35,9 +35,9 @@ class Sprite {
         let rect = Rect(a: vertexdata[0].position, b: vertexdata[1].position, c: vertexdata[2].position, d: vertexdata[3].position)
         boundingBox = BoundingBox2D(origin: vector_float4(0,0,0,0), bounds: rect)
 
-        vertexBuffer = device?.makeBuffer(bytes: vertexdata, length: vertexLength, options: [])
+        vertexBuffer = device?.makeBuffer(bytes: vertexdata, length: vertexdata.count * MemoryLayout<Vertex>.size, options: [])
         uniformBuffer = device?.makeBuffer(length: MemoryLayout<Float>.size*16, options: [])
-        indexBuffer = device?.makeBuffer(bytes: indexdata, length: indexLength, options: [])
+        indexBuffer = device?.makeBuffer(bytes: indexdata, length: indexdata.count * MemoryLayout<Vertex>.size, options: [])
         
         addTexture(with: textureURL)
         texture = textures[0]
@@ -109,15 +109,7 @@ class Sprite {
     }
     
     func update() {
-        let rotationX = rotationMatrix(angle: boundingBox.rotation.x, axis: vector_float3(1,0,0))
-        let rotationY = rotationMatrix(angle: boundingBox.rotation.y, axis: vector_float3(0,1,0))
-        let rotationZ = rotationMatrix(angle: boundingBox.rotation.z, axis: vector_float3(0,0,1))
-        let scaleMatrix = scalingMatrix(scale: boundingBox.scale)
-        let translate = translationMatrix(position: boundingBox.translation)
-        boundingBox.matrix = matrix_multiply(translate,
-                                      matrix_multiply(rotationZ,
-                                      matrix_multiply(rotationX,
-                                      matrix_multiply(rotationY,scaleMatrix))))
+        boundingBox.updateMatrix()
         let uniformPointer = uniformBuffer.contents()
         var uniforms = Uniforms(mat: boundingBox.matrix)
         memcpy(uniformPointer, &uniforms, MemoryLayout<Float>.size*16)

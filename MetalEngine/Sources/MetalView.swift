@@ -16,6 +16,7 @@ class MetalView: MTKView {
     
     var testSprite: Sprite!
     var playerSprite: Sprite!
+    var blockSprite: Sprite!
     
     var uimanager: UIManager!
     var renderer: Renderer!
@@ -48,6 +49,7 @@ class MetalView: MTKView {
                 update()
                 renderer.updateUniforms(drawableSize: drawableSize)
                 renderer.startRender(renderPassDescriptor: currentRenderPassDescriptor!)
+                blockSprite.render(commandEncoder: renderer.commandEncoder)
                 testSprite.render(commandEncoder: renderer.commandEncoder)
                 playerSprite.render(commandEncoder: renderer.commandEncoder)
                 renderer.finishRender(drawable: currentDrawable!)
@@ -69,26 +71,34 @@ class MetalView: MTKView {
     func update() {
         if uimanager.keyboard.keyStateD == .down {
             playerSprite.boundingBox.translation.x += 0.015
+            if playerSprite.boundingBox.checkCollision(with: blockSprite.boundingBox.getBounds()) != 0 {
+                playerSprite.boundingBox.translation.x -= 0.015
+            }
             playerSprite.setTopTexture(id: 0)
         }
         if uimanager.keyboard.keyStateA == .down {
             playerSprite.boundingBox.translation.x -= 0.015
+            if playerSprite.boundingBox.checkCollision(with: blockSprite.boundingBox.getBounds()) != 0 {
+                playerSprite.boundingBox.translation.x += 0.015
+            }
             playerSprite.setTopTexture(id: 1)
         }
         if uimanager.keyboard.keyStateW == .down {
             playerSprite.boundingBox.translation.y += 0.015
+            if playerSprite.boundingBox.checkCollision(with: blockSprite.boundingBox.getBounds()) != 0 {
+                playerSprite.boundingBox.translation.y -= 0.015
+            }
             playerSprite.setTopTexture(id: 2)
         }
         if uimanager.keyboard.keyStateS == .down {
             playerSprite.boundingBox.translation.y -= 0.015
+            if playerSprite.boundingBox.checkCollision(with: blockSprite.boundingBox.getBounds()) != 0 {
+                playerSprite.boundingBox.translation.y += 0.015
+            }
             playerSprite.setTopTexture(id: 3)
         }
         
-        testSprite.boundingBox.rotation.z += 0.01
-        if testSprite.boundingBox.rotation.z >= 2*Float.pi {
-            testSprite.boundingBox.rotation.z -= 2*Float.pi
-        }
-        
+        blockSprite.update()
         testSprite.update()
         playerSprite.update()
         
@@ -102,11 +112,11 @@ class MetalView: MTKView {
                                      Vertex(pos: [-1.0, 1.0, 0.0, 1.0], col: [ 1.0, 1.0, 0.0, 1.0], tex: [0.0, 0.0]),
                                      Vertex(pos: [ 0.0, 0.0, 0.0, 1.0], col: [ 0.0, 0.0, 0.0, 1.0], tex: [0.0, 0.0]),]
         
-        let vertex_data2: [Vertex] = [Vertex(pos: [-0.625,-1.0, 0.0, 1.0], col: [ 1.0, 0.0, 0.0, 1.0], tex: [0.0, 1.0]),
-                                      Vertex(pos: [ 0.625,-1.0, 0.0, 1.0], col: [ 0.0, 1.0, 0.0, 1.0], tex: [1.0, 1.0]),
-                                      Vertex(pos: [ 0.625, 1.0, 0.0, 1.0], col: [ 0.0, 0.0, 1.0, 1.0], tex: [1.0, 0.0]),
-                                      Vertex(pos: [-0.625, 1.0, 0.0, 1.0], col: [ 1.0, 1.0, 0.0, 1.0], tex: [0.0, 0.0]),
-                                      Vertex(pos: [ 0.000, 0.0, 0.0, 1.0], col: [ 0.0, 0.0, 0.0, 1.0], tex: [0.0, 0.0]),]
+        let _: [Vertex] = [Vertex(pos: [-0.625,-1.0, 0.0, 1.0], col: [ 1.0, 0.0, 0.0, 1.0], tex: [0.0, 1.0]),
+                           Vertex(pos: [ 0.625,-1.0, 0.0, 1.0], col: [ 0.0, 1.0, 0.0, 1.0], tex: [1.0, 1.0]),
+                           Vertex(pos: [ 0.625, 1.0, 0.0, 1.0], col: [ 0.0, 0.0, 1.0, 1.0], tex: [1.0, 0.0]),
+                           Vertex(pos: [-0.625, 1.0, 0.0, 1.0], col: [ 1.0, 1.0, 0.0, 1.0], tex: [0.0, 0.0]),
+                           Vertex(pos: [ 0.000, 0.0, 0.0, 1.0], col: [ 0.0, 0.0, 0.0, 1.0], tex: [0.0, 0.0]),]
         
         let index_data: [uint16] = [0, 1, 2, 2, 3, 0]
         
@@ -116,12 +126,12 @@ class MetalView: MTKView {
         let urlPlayer2 = Bundle.main.url(forResource: "starmanTopLeft", withExtension: "png")!
         let urlPlayer3 = Bundle.main.url(forResource: "starmanTopUp", withExtension: "png")!
         let urlPlayer4 = Bundle.main.url(forResource: "starmanTopDown", withExtension: "png")!
-        //let urlBlueBox = Bundle.main.url(forResource: "blue", withExtension: "png")!
+        let urlBlueBox = Bundle.main.url(forResource: "blue", withExtension: "png")!
         
         testSprite = Sprite(device: device,
                             vertexdata: vertex_data,
                             indexdata: index_data,
-                            textureURLs: [url,urlMetal2],
+                            textureURL: urlMetal2,
                             id: 0)
         
         playerSprite = Sprite(device: device,
@@ -130,11 +140,18 @@ class MetalView: MTKView {
                               textureURLs: [urlPlayer1,urlPlayer2,urlPlayer3,urlPlayer4],
                               id: 1)
         
+        blockSprite = Sprite(device: device,
+                             vertexdata: vertex_data,
+                             indexdata: index_data,
+                             textureURL: urlBlueBox, id: 3)
+        
+        blockSprite.boundingBox.scale = float3(0.2,0.7,1)
+        blockSprite.boundingBox.translation.x = -0.6
+        
         testSprite.boundingBox.scale = float3(0.5,0.5,1)
-        testSprite.boundingBox.rotation.z = 2
         testSprite.boundingBox.translation.x = 0.4
         
-        testSprite.setAnimation(name: "idle", frameIndex: [0,1], interval: 1)
+        //testSprite.setAnimation(name: "idle", frameIndex: [0,1], interval: 1)
         
         playerSprite.boundingBox.scale = float3(0.2,0.2,1)
         playerSprite.boundingBox.translation.y = -0.8

@@ -28,6 +28,7 @@ class BoundingBox2D {
     }
     
     func getBounds() -> Rect {
+        updateMatrix()
         let rect = Rect(a: matrix * bounds.a, b: matrix * bounds.b, c: matrix * bounds.c, d: matrix * bounds.d)
         return rect
     }
@@ -48,6 +49,18 @@ class BoundingBox2D {
         self.origin = matrix * origin
     }
     
+    func updateMatrix() {
+        let rotationX = rotationMatrix(angle: rotation.x, axis: vector_float3(1,0,0))
+        let rotationY = rotationMatrix(angle: rotation.y, axis: vector_float3(0,1,0))
+        let rotationZ = rotationMatrix(angle: rotation.z, axis: vector_float3(0,0,1))
+        let scaleMatrix = scalingMatrix(scale: scale)
+        let translate = translationMatrix(position: translation)
+        matrix = matrix_multiply(translate,
+                             matrix_multiply(rotationZ,
+                             matrix_multiply(rotationX,
+                             matrix_multiply(rotationY,scaleMatrix))))
+    }
+    
     func checkPointCollision(with rect: Rect, point: vector_float4) -> Int {
         let _1: Double = Double(dotProduct(a: rect.a-point, b: rect.b-point) /
             (magnitude(vector: rect.a-point)*magnitude(vector: rect.b-point)))
@@ -60,7 +73,7 @@ class BoundingBox2D {
         
         let _0 = acos(_1) + acos(_2) + acos(_3) + acos(_4)
         
-        if fabs(Double.pi*2 - _0) <= 0.001*fabs(Double.pi*2) {
+        if fabs(Double.pi*2 - _0) <= 0.0001*fabs(Double.pi*2) {
             return 1
         }
         
@@ -68,7 +81,7 @@ class BoundingBox2D {
     }
     
     public func checkCollision(with rect2: Rect) -> Int {
-        let _00 = Rect(a: matrix * bounds.a, b: matrix * bounds.b, c: matrix * bounds.c, d: matrix * bounds.d)
+        let _00 = getBounds()
         
         let _01 = vector_float4((_00.c.x-_00.a.x)/2,
                                 (_00.c.y-_00.a.y)/2,
